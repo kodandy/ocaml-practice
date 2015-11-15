@@ -5,9 +5,6 @@
 組
 タプル
 
-```
-```
-
 # レコードの必要性
 
 引数に代入するときも、作る時も、組（タプル）だと順番を覚えておかなければならない。
@@ -48,7 +45,7 @@
 {seiseki = "B" ; name = "asai" ; tensuu = 70 ;  } ;;
 ```
 
-フィールドが無い（または新しいフィールだがある）と別のデータ型になる。
+フィールドが無い（または新しいフィールだがある）と別のデータ型になり、エラーになる。
 
 ```
 { name = "asai"  } ;;
@@ -57,7 +54,7 @@
 
 ```
 
-エラーの内容 : 「レコードのフィールドで指定されていないものがある」
+エラーの内容 : 「レコードのフィールドで指定されていないものがある」等
 
 
 # レコードとパターンマッチ
@@ -85,7 +82,7 @@ tuuchi {seiseki = "B" ; name = "asai" ; tensuu = 70 ;  } ;;
 (*レコードを返す例*)
 (*gakusei_t -> gakusei_t*)
 let addHyouka gakusei =
-              match gaksuei with
+              match gakusei with
                   {name = n ; tensuu = t ; seiseki = s}  ->
                          { name = n ;
                            tensuu = t ;
@@ -118,8 +115,8 @@ tuuchi (addHyouka {name = "asai" ; tensuu = 70 ;  seiseki = ""} )
 ```
 (*レコードを返す例2*)
 (*gakusei_t -> gakusei_t*)
-let addHyouka` gakusei =
-              match gaksuei with
+let addHyouka2 gakusei =
+              match gakusei with
                   {name = n ; tensuu = t ; seiseki = s}  ->
                          { name = n ;
                            tensuu = t ;
@@ -133,23 +130,23 @@ let addHyouka` gakusei =
 ```
 let asai = {name = "asai" ; tensuu = 70 ;  seiseki = "B"};;
 
-asai.name
+asai.name ;;
 
-asai.tensuu
+asai.tensuu ;;
 
-{name = "asai"}.name
+{name = "asai" ; tensuu = 70 ;  seiseki = "B"}.name;;
 ```
 
 -----
 
 本書ではこれらの記法は使わない。
-フィールド名とパターン変数を同じにする方法を使わないのは、混同の恐れ。
+フィールド名とパターン変数を同じにする方法を使わないのは、混同の恐れから。  
 読みやすさが損なわれるなら、別の名前をつかう。
-フィールドの省略。
+フィールドの省略。  
 本体を作ってみないと、省略出来るかできるかわからない。デザインレシピとの齟齬。
-列挙しておくことの利点をとる。
-ドットを使ったフィールドアクセス。
-デザインレシピの優先
+列挙しておくことの利点をとる。  
+ドットを使ったフィールドアクセス。  
+デザインレシピの優先から
 
 #ユーザによる型定義
 
@@ -190,32 +187,29 @@ book_tには
 ISBN をもつとする。
 
 ```
-(*本情報*)
 type book_t = {
   title : string ;
   tyosya : string ;
-  syuppansya : stirng ;
+  syuppansya : string ;
   nedann : int ;
-  ISBN : string ;
+  isbn : string ;
 }
-```
-##問題8.2
 
-```
+type day_t = {day :int ; year : int ; month : int}
+
 type okozukai_t = {
   name : string ;
-  basyo : stirng ;
-  day : {day :int ; year : int ; month : int}
+  basyo : string ;
+  day : day_t
 }
-```
-##問題8.3
 
-```
+type tanzyoubi_t = {month:int;day:int}
+
 type person_t = {
   sintyou : float ;
   taizyuu : float ;
-  tanzyoubi : {month:int;day:int}
-
+  tanzyoubi : tanzyoubi_t ;
+  ketuekigata : string
 }
 ```
 # データ定義に対するデザインレシピ
@@ -268,24 +262,30 @@ type gakusei_t {
 # 駅名と駅間の情報の定義
 
 ```
+(*  駅名データ*)
 type ekimei_t = {
-      kanji : string ;
-      kana : string ;
-      romaji : string ;
-      syozoku : string ;
+      kanji : string ;  (*漢字名*)
+      kana : string ; (*かな名*)
+      romaji : string ; (*ローマ字名*)
+      shozoku : string ; (*所属路線名*)
 }
-```
 
-```
-hyouji
-```
+(*駅名の表示*)
+(* ekimei_t -> string *)
+let hyouji ekimei =
+          match ekimei with
+                {kanji = kanji ; kana = kana ; romaji = r ; shozoku = shozoku} ->
+                       shozoku ^ ", " ^ kanji ^ "(" ^ kana  ^ ")" ;;
 
-```
+hyouji {kanji = "茗荷谷" ; kana = "みょうがだに"; romaji = "myougadani" ; shozoku = "丸ノ内線"} ;;
+let hyoujiTest = hyouji {kanji = "茗荷谷" ; kana = "みょうがだに"; romaji = "myougadani" ; shozoku = "丸ノ内線"} = "丸ノ内線, 茗荷谷(みょうがだに)";;
+
+(* 駅と駅の接続情報 *)
 type ekikan_t = {
-    kiten : string ;
-    shuten : string ;
-    keiyu : string;
-    kyori : float ;
-    jikan : int ;
+    kiten : string ; (*起点の駅名*)
+    shuten : string ; (*終点の駅名*)
+    keiyu : string; (*経由する路線名*)
+    kyori : float ; (*距離　km*)
+    jikan : int ; (*時間　分*)
 }
 ```
