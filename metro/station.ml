@@ -1,4 +1,3 @@
-#use "metro/station_list.ml"
  
 (* 駅名データ *)
 type ekimei_t = {
@@ -16,6 +15,8 @@ type ekikan_t = {
     kyori  : float;  (*距離　km*)
     jikan  : int;    (*時間　分*)
 }
+
+#use "metro/station_list.ml"
 
 (* ------------------- *)
 
