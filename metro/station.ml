@@ -66,7 +66,7 @@ let test3 = romaji_to_kanji "ueno" global_ekimei_list = "上野"
 
 let rec get_ekikan_kyori station_now station_next global_ekikan_list = match global_ekikan_list with
     [] -> infinity
-  | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} as first :: rest ->
+  | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} :: rest ->
         if kiten = station_now && shuten = station_next
         then kyori
         else if kiten = station_next && shuten = station_now
@@ -81,4 +81,10 @@ let test4 = get_ekikan_kyori "湯島" "神田" global_ekikan_list = infinity
 
 (* ------------------- *)
 (* 問題10.12 *)
-
+let rec kyori_wo_hyoji station_now station_next global_ekikan_list = match global_ekikan_list with
+    infinity -> "A駅とB駅はつながっていません"
+  | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} :: rest ->
+        if
+            (* 駅が存在しない時の処理 *)
+        else
+            (* 駅の距離を返す処理 string_of_float *)
