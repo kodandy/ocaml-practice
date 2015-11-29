@@ -69,13 +69,13 @@ let rec get_ekikan_kyori station_now station_next global_ekikan_list = match glo
   | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} as first :: rest ->
         if kiten = station_now && shuten = station_next
         then kyori
-        else if kiten = station_next && kiten = station_now
+        else if kiten = station_next && shuten = station_now
         then kyori
         else get_ekikan_kyori station_now station_next rest
 
 (* テスト *)
 let test1 = get_ekikan_kyori "乃木坂" "赤坂" global_ekikan_list = 1.1
-let test2 = get_ekikan_kyori "霞が関" "日比谷"  global_ekikan_list = 1.2
+let test2 = get_ekikan_kyori "霞ヶ関" "日比谷" global_ekikan_list = 1.2
 let test3 = get_ekikan_kyori "乃木坂" "表参道" global_ekikan_list = 1.4
 
 (* ------------------- *)
