@@ -1,5 +1,3 @@
-#use "station.ml" 
- 
 (* 駅名データ *)
 let global_ekimei_list = [ 
     {kanji="代々木上原"; kana="よよぎうえはら"; romaji="yoyogiuehara"; shozoku="千代田線"}; 
