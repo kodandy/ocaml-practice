@@ -77,6 +77,7 @@ let rec get_ekikan_kyori station_now station_next global_ekikan_list = match glo
 let test1 = get_ekikan_kyori "乃木坂" "赤坂" global_ekikan_list = 1.1
 let test2 = get_ekikan_kyori "霞ヶ関" "日比谷" global_ekikan_list = 1.2
 let test3 = get_ekikan_kyori "乃木坂" "表参道" global_ekikan_list = 1.4
+let test4 = get_ekikan_kyori "湯島" "神田" global_ekikan_list = infinity
 
 (* ------------------- *)
 (* 問題10.12 *)
