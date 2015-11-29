@@ -46,8 +46,8 @@ let hyoujiTest =
 (* 問題10.10 *)
 (* 目的：駅名（文字列）と駅名リスト（ekimei_t list型）を受け取り、駅名を漢字表記で返す *)
 (* romaji_to_kanji : string -> ekimei_t list -> string *)
-let rec romaji_to_kanji station_name global_ekimei_list = match station_name with
-    [] -> ""
+let rec romaji_to_kanji station_name global_ekimei_list = match global_ekimei_list with
+    "" -> ""
   | {kanji = kanji; kana = kana; romaji = romaji; shozoku = shozoku;} as first :: rest ->
       if station_name = romaji
       then kanji
