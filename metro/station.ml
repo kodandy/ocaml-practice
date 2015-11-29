@@ -64,7 +64,7 @@ let test3 = romaji_to_kanji "ueno" global_ekimei_list = "上野"
 (* 目的：漢字の駅名ふたつ（文字列）と駅間リスト（ekikan_t list型）を受け取ったら駅間リストの中から2駅間の距離を返す *)
 (* romaji_to_kanji : string -> string -> ekikan_t list -> string *)
 
-let rec get_ekikan_kyori station_now station_next global_ekikan_list = match
+let rec get_ekikan_kyori station_now station_next global_ekikan_list = match global_ekikan_list with
     [] -> infinity
   | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} as first :: rest ->
         if kiten = station_now && shuten = station_next
@@ -73,6 +73,10 @@ let rec get_ekikan_kyori station_now station_next global_ekikan_list = match
         then kyori
         else get_ekikan_kyori station_now station_next rest
 
+(* テスト *)
+let test1 = get_ekikan_kyori "乃木坂" "赤坂" global_ekikan_list = 1.1
+let test2 = get_ekikan_kyori "霞が関" "日比谷"  global_ekikan_list = 1.2
+let test3 = get_ekikan_kyori "乃木坂" "表参道" global_ekikan_list = 1.4
 
 (* ------------------- *)
 (* 問題10.12 *)
