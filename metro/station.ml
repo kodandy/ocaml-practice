@@ -30,11 +30,11 @@ let hyouji ekimei =
 hyouji {
     kanji = "茗荷谷";
     kana = "みょうがだに";
-    romaji = "myougadani"; 
+    romaji = "myougadani";
     shozoku = "丸ノ内線"
 };;
 
-let hyoujiTest = 
+let hyoujiTest =
     hyouji {
         kanji = "茗荷谷";
         kana = "みょうがだに";
@@ -81,10 +81,25 @@ let test4 = get_ekikan_kyori "湯島" "神田" global_ekikan_list = infinity
 
 (* ------------------- *)
 (* 問題10.12 *)
-let rec kyori_wo_hyoji station_now station_next global_ekikan_list = match global_ekikan_list with
-    infinity -> "A駅とB駅はつながっていません"
-  | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} :: rest ->
-        if
-            (* 駅が存在しない時の処理 *)
-        else
-            (* 駅の距離を返す処理 string_of_float *)
+let rec kyori_wo_hyoji station_now station_next global_ekikan_list =
+  let now_kanji = romaji_to_kanji station_now global_ekimei_list in
+  let next_kanji = romaji_to_kanji station_next global_ekimei_list in
+    match global_ekikan_list with
+      [] -> station_now ^" " ^ station_next ^ "という駅は存在しません。"
+    | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} :: rest ->
+          if kiten = now_kanji  then
+                  if shuten = next_kanji then
+                      now_kanji ^ "駅と"
+                      ^next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
+                    else "A駅とB駅はつながっていません"
+          else
+          if kiten = now_kanji then
+                  if shuten = next_kanji then
+                     next_kanji ^ "と"
+                     ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"
+                     else "A駅とB駅はつながっていません"
+          else kyori_wo_hyoji station_now station_next rest
+
+let kyori_wo_hyojiTest1 = kyori_wo_hyoji "kasumigaseki" "hibiya" global_ekikan_list 
+(* let kyori_wo_hyojiTest2 =
+let kyori_wo_hyojiTest3 =        *)
