@@ -81,6 +81,7 @@ let test4 = get_ekikan_kyori "湯島" "神田" global_ekikan_list = infinity
 
 (* ------------------- *)
 (* 問題10.12 *)
+(* ローマ字の駅名２つ受け取り、つながっている場合距離を表示、繋がっていない場合その旨を表示、駅名が存在しない場合その旨を表示。 *)
 let rec kyori_wo_hyoji station_now station_next global_ekikan_list =
   let now_kanji = romaji_to_kanji station_now global_ekimei_list in
   let next_kanji = romaji_to_kanji station_next global_ekimei_list in
@@ -89,17 +90,63 @@ let rec kyori_wo_hyoji station_now station_next global_ekikan_list =
     | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} :: rest ->
           if kiten = now_kanji  then
                   if shuten = next_kanji then
-                      now_kanji ^ "駅と"
-                      ^next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
-                    else "A駅とB駅はつながっていません"
+                      now_kanji ^ "駅と" ^ next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
+                  else
+                     "A駅とB駅はつながっていません"
+          else if kiten = next_kanji then
+                  if shuten = now_kanji then
+                      next_kanji ^ "と" ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"
+                  else
+                      "A駅とB駅はつながっていません"
           else
-          if kiten = now_kanji then
-                  if shuten = next_kanji then
-                     next_kanji ^ "と"
-                     ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"
-                     else "A駅とB駅はつながっていません"
-          else kyori_wo_hyoji station_now station_next rest
+           kyori_wo_hyoji station_now station_next rest
 
-let kyori_wo_hyojiTest1 = kyori_wo_hyoji "kasumigaseki" "hibiya" global_ekikan_list 
-(* let kyori_wo_hyojiTest2 =
-let kyori_wo_hyojiTest3 =        *)
+
+
+let kyori_wo_hyojiTest1 = kyori_wo_hyoji "kasumigaseki" "hibiya" global_ekikan_list
+let kyori_wo_hyojiTest2 = kyori_wo_hyoji "kasumigaseki" "test" global_ekikan_list
+let kyori_wo_hyojiTest3 = kyori_wo_hyoji "test" "hibiya" global_ekikan_list
+let kyori_wo_hyojiTest4 = kyori_wo_hyoji "test" "test" global_ekikan_list
+
+(* 問題 12.1 *)
+
+type eki_t = {
+  namae : string ; (*駅名　漢字*)
+  saitan_kyori : float ; (*最短距離　実数*)
+  temae_list : string list ; (*駅名　漢字*)
+}
+
+(* 問題　12.2 *)
+(* ekimei_t  list -> eki_t list*)
+let rec make_eki_list global_ekimei_list =
+        match global_ekimei_list with
+                [] -> []
+                | {kanji = kanji} :: rest ->
+                    {namae= kanji; saitan_kyori = infinity ; temae_list = []}  ::  make_eki_list rest
+
+let make_eki_listTest1 = make_eki_list global_ekimei_list
+
+(* 問題　12.3 *)
+(* 起点になる駅の名前を受け取り、eki_t_listを初期化する *)
+let rec shokika kiten eki_t_list =
+      match eki_t_list with
+              [] -> []
+              | ({namae = namae } as first) :: rest ->
+                  let target =
+                           if  namae = kiten then
+                                    {namae = namae ; saitan_kyori = 0. ; temae_list = [kiten]}
+                            else
+                                    first
+                  in target :: shokika kiten rest
+
+let shokikaTest = shokika "池袋"  (make_eki_list global_ekimei_list)
+
+
+(* let insert list =
+          match list with
+                  [] ->  *)
+(* 問題12.4   *)
+(* global_ekimei_listを受け取りひらがなの順に整列し、駅名の重複を取り除く *)
+let seiretsu global_ekimei_list =
+        let f {kana = kana1} {kana = kana2} = compare kana1 kana2 in
+        List.sort f global_ekimei_list
