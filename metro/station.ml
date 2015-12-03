@@ -88,19 +88,24 @@ let rec kyori_wo_hyoji station_now station_next global_ekikan_list =
     match global_ekikan_list with
       [] -> station_now ^" " ^ station_next ^ "という駅は存在しません。"
     | {kiten = kiten; shuten = shuten; keiyu = keiyu; kyori = kyori; jikan = jikan} :: rest ->
-          if kiten = now_kanji  then
-                  if shuten = next_kanji then
-                      now_kanji ^ "駅と" ^ next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
-                  else
-                      now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"
-          else if kiten = next_kanji then
-                  if shuten = now_kanji then
-                      next_kanji ^ "と" ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"
-                  else
-                      now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"
+          (* if kiten = now_kanji  then                                                                                 *)
+          (*         if shuten = next_kanji then                                                                        *)
+          (*             now_kanji ^ "駅と" ^ next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。" *)
+          (*         else                                                                                               *)
+          (*             now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"                        *)
+          (* else if kiten = next_kanji then                                                                            *)
+          (*         if shuten = now_kanji then                                                                         *)
+          (*             next_kanji ^ "と" ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"       *)
+          (*         else                                                                                               *)
+          (*             now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"                        *)
+          (* else                                                                                                       *)
+          (*  kyori_wo_hyoji station_now station_next rest                                                              *)
+          if kiten = now_kanji && shuten = next_kanji || kiten = next_kanji && shuten = now_kanji then
+              now_kanji ^ "駅と" ^ next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
+          if else kiten = now_kanji && shuten = next_kanji || kiten = next_kanji && shuten = now_kanji
+              now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"
           else
-           kyori_wo_hyoji station_now station_next rest
-
+              kyori_wo_hyoji station_now station_next rest
 
 
 let kyori_wo_hyojiTest1 = kyori_wo_hyoji "kasumigaseki" "hibiya" global_ekikan_list
