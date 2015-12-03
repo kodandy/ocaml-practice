@@ -93,16 +93,20 @@ let rec kyori_wo_hyoji station_now station_next global_ekikan_list =
                       now_kanji ^ "駅と" ^ next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
                   else
                      "A駅とB駅はつながっていません"
-          else if kiten = now_kanji then
-                  if shuten = next_kanji then
+          else if kiten = next_kanji then
+                  if shuten = now_kanji then
                       next_kanji ^ "と" ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"
                   else
                       "A駅とB駅はつながっていません"
           else
            kyori_wo_hyoji station_now station_next rest
 
-let kyori_wo_hyojiTest1 = kyori_wo_hyoji "kasumigaseki" "hibiya" global_ekikan_list
 
+
+let kyori_wo_hyojiTest1 = kyori_wo_hyoji "kasumigaseki" "hibiya" global_ekikan_list
+let kyori_wo_hyojiTest2 = kyori_wo_hyoji "kasumigaseki" "test" global_ekikan_list
+let kyori_wo_hyojiTest3 = kyori_wo_hyoji "test" "hibiya" global_ekikan_list
+let kyori_wo_hyojiTest4 = kyori_wo_hyoji "test" "test" global_ekikan_list
 
 (* 問題 12.1 *)
 
@@ -146,5 +150,3 @@ let shokikaTest = shokika "池袋"  (make_eki_list global_ekimei_list)
 let seiretsu global_ekimei_list =
         let f {kana = kana1} {kana = kana2} = compare kana1 kana2 in
         List.sort f global_ekimei_list
-
-let seiretsuTest = seiretsu 2
