@@ -92,12 +92,12 @@ let rec kyori_wo_hyoji station_now station_next global_ekikan_list =
                   if shuten = next_kanji then
                       now_kanji ^ "駅と" ^ next_kanji  ^"駅の距離は" ^ string_of_float  kyori ^ "kmです。"
                   else
-                     "A駅とB駅はつながっていません"
+                      now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"
           else if kiten = next_kanji then
                   if shuten = now_kanji then
                       next_kanji ^ "と" ^ now_kanji ^ "の距離は" ^ string_of_float  kyori ^ "kmです。"
                   else
-                      "A駅とB駅はつながっていません"
+                      now_kanji ^ "駅と" ^ next_kanji ^ "駅はつながっていません"
           else
            kyori_wo_hyoji station_now station_next rest
 
